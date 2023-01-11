@@ -1,12 +1,18 @@
 import React from 'react';
-import './App.css';
 import { Route, Switch } from 'react-router';
+import { connect } from 'react-redux';
 import Login from './pages/Login';
+import Games from './pages/Games';
 
-export default function App() {
-  return (
-    <Switch>
-      <Route exact path="/" component={ Login } />
-    </Switch>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Switch>
+        <Route exact path="/" render={ (props) => <Login { ...props } /> } />
+        <Route exact path="/games" render={ (props) => <Games { ...props } /> } />
+      </Switch>
+    );
+  }
 }
+
+export default connect()(App);

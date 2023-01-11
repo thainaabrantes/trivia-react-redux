@@ -1,4 +1,7 @@
 import { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import fetchToken from '../serviceAPI/triviaAPI';
 
 class Login extends Component {
   constructor(props) {
@@ -28,8 +31,11 @@ class Login extends Component {
     });
   };
 
-  handleClick = () => {
-
+  handleClick = async () => {
+    const { history } = this.props;
+    const token = await fetchToken();
+    localStorage.setItem('token', token);
+    history.push('/games');
   };
 
   render() {
@@ -70,4 +76,14 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }),
+};
+
+Login.defaultProps = {
+  history: {},
+};
+
+export default connect()(Login);
