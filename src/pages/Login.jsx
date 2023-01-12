@@ -48,6 +48,7 @@ class Login extends Component {
             data-testid="input-player-name"
             id="player-name"
             type="text"
+            placeholder="Digite seu nome"
             name="name"
             value={ name }
             onChange={ ({ target }) => this.handleChange(target) }
@@ -58,6 +59,7 @@ class Login extends Component {
             data-testid="input-gravatar-email"
             id="gravatar-email"
             type="text"
+            placeholder="Digite seu email"
             name="email"
             value={ email }
             onChange={ ({ target }) => this.handleChange(target) }
