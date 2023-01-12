@@ -34,7 +34,7 @@ describe('Componente Login', () => {
     userEvent.type(nameInput, 'Uzumaki Naruto');
     const btn = screen.getByRole('button', {name: /play/i})
     userEvent.click(btn);
-    expect(history.location.pathname).toBe('/');
+    expect(history.location.pathname).toBe('/games');
   })
 });
 
