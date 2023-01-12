@@ -86,7 +86,7 @@ class Login extends Component {
           type="submit"
           onClick={ this.handleClick }
         >
-          Configurações
+          settings
         </button>
       </div>
     );
