@@ -1,4 +1,7 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addSetting } from '../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -28,8 +31,14 @@ class Login extends Component {
     });
   };
 
-  handleClick = () => {
+  handlePlay = () => {
+  };
 
+  handleClick = (event) => {
+    event.preventDefault();
+    const { dispatch, history } = this.props;
+    dispatch(addSetting(this.state));
+    history.push('/settings');
   };
 
   render() {
@@ -61,13 +70,27 @@ class Login extends Component {
           data-testid="btn-play"
           type="button"
           disabled={ isBtnDisabled }
-          onClick={ this.handleClick }
+          onClick={ this.handlePlay }
         >
           Play
+        </button>
+        <button
+          data-testid="btn-settings"
+          type="submit"
+          onClick={ this.handleClick }
+        >
+          Configurações
         </button>
       </div>
     );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+  dispatch: PropTypes.func,
+}.isRequired;
+
+export default connect()(Login);
