@@ -1,6 +1,7 @@
 import { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { addSetting } from '../redux/actions';
 import fetchToken from '../serviceAPI/triviaAPI';
 
 class Login extends Component {
@@ -31,11 +32,18 @@ class Login extends Component {
     });
   };
 
-  handleClick = async () => {
+  handlePlay = async () => {
     const { history } = this.props;
     const token = await fetchToken();
     localStorage.setItem('token', token);
     history.push('/games');
+  };
+
+  handleClick = (event) => {
+    event.preventDefault();
+    const { dispatch, history } = this.props;
+    dispatch(addSetting(this.state));
+    history.push('/settings');
   };
 
   render() {
@@ -69,9 +77,16 @@ class Login extends Component {
           data-testid="btn-play"
           type="button"
           disabled={ isBtnDisabled }
-          onClick={ this.handleClick }
+          onClick={ this.handlePlay }
         >
           Play
+        </button>
+        <button
+          data-testid="btn-settings"
+          type="submit"
+          onClick={ this.handleClick }
+        >
+          settings
         </button>
       </div>
     );
@@ -80,12 +95,9 @@ class Login extends Component {
 
 Login.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
+    push: PropTypes.func,
   }),
-};
-
-Login.defaultProps = {
-  history: {},
-};
+  dispatch: PropTypes.func,
+}.isRequired;
 
 export default connect()(Login);
