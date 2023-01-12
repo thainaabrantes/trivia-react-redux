@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addSetting } from '../redux/actions';
+import fetchToken from '../serviceAPI/triviaAPI';
 
 class Login extends Component {
   constructor(props) {
@@ -31,7 +32,11 @@ class Login extends Component {
     });
   };
 
-  handlePlay = () => {
+  handlePlay = async () => {
+    const { history } = this.props;
+    const token = await fetchToken();
+    localStorage.setItem('token', token);
+    history.push('/games');
   };
 
   handleClick = (event) => {
@@ -51,6 +56,7 @@ class Login extends Component {
             data-testid="input-player-name"
             id="player-name"
             type="text"
+            placeholder="Digite seu nome"
             name="name"
             value={ name }
             onChange={ ({ target }) => this.handleChange(target) }
@@ -61,6 +67,7 @@ class Login extends Component {
             data-testid="input-gravatar-email"
             id="gravatar-email"
             type="text"
+            placeholder="Digite seu email"
             name="email"
             value={ email }
             onChange={ ({ target }) => this.handleChange(target) }
