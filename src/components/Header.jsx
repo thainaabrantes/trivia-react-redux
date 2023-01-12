@@ -11,7 +11,7 @@ class Header extends Component {
       <header>
         <img
           data-testid="header-profile-picture"
-          src={`https://www.gravatar.com/avatar/${md5(email)}`}
+          src={ `https://www.gravatar.com/avatar/${md5(email)}` }
           alt="Gravatar"
         />
         <p data-testid="header-player-name">{`Nome: ${name} `}</p>
