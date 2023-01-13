@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
 import fetchGame from '../serviceAPI/gameAPI';
@@ -60,6 +59,13 @@ class Games extends Component {
     });
   };
 
+  handleNextQUestion = () => {
+    this.setState({
+      clicked: false,
+    });
+    this.fetchAnswers();
+  };
+
   //  Fiz um aninhamento de expressão ternária para fazer a classe, porém o Lint me obrigou a fazer isso
   renderAnswersLint = () => {
     const { allAnswers, respostaCorreta, clicked } = this.state;
@@ -91,6 +97,7 @@ class Games extends Component {
 
   render() {
     const { categoria, pergunta, showTimer } = this.state;
+
     return (
       <section>
         <Header />
@@ -107,6 +114,15 @@ class Games extends Component {
           <div data-testid="answer-options">
             { this.renderAnswersLint() }
           </div>
+          {clicked && (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.handleNextQUestion }
+            >
+              Next
+            </button>
+          )}
         </div>
       </section>
     );
@@ -119,4 +135,4 @@ Games.propTypes = {
   }).isRequired,
 };
 
-export default connect()(Games);
+export default Games;
