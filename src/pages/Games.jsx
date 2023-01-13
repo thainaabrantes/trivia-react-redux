@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import Timer from '../components/Timer';
 import fetchGame from '../serviceAPI/gameAPI';
 import '../css/style.css';
-import TimerButton from '../components/TimerButton';
 
 const ERROR_RESPONSE = 3;
+const ONE_SECOND = 1000;
+const THIRTY_SECONDS = 30000;
 
 class Games extends Component {
   constructor() {
@@ -18,15 +18,28 @@ class Games extends Component {
       allAnswers: [],
       clicked: false,
       showTimer: false,
+      second: 30,
+      intervalId: '',
     };
   }
 
   componentDidMount() {
     this.fetchAnswers();
+    const intervalId = setInterval(() => {
+      this.setState((prevState) => ({
+        second: prevState.second - 1,
+      }));
+    }, ONE_SECOND);
+    setTimeout(() => {
+      this.setState({ clicked: true });
+    }, THIRTY_SECONDS);
+    this.setState({
+      intervalId,
+    });
   }
 
   toggleTimer = () => {
-    this.setState = ((prevState) => ({
+    this.setState((prevState) => ({
       showTimer: !prevState.showTimer,
     }));
   };
@@ -51,6 +64,7 @@ class Games extends Component {
         allAnswers: allA.sort(() => Math.random() - shuffleParam),
       });
     }
+    this.toggleTimer();
   };
 
   handleClick = () => {
@@ -96,15 +110,17 @@ class Games extends Component {
   };
 
   render() {
-    const { categoria, pergunta, showTimer } = this.state;
+    const { categoria, pergunta, showTimer, clicked, second, intervalId } = this.state;
+    if (second === 0 || clicked) {
+      clearInterval(intervalId);
+    }
 
     return (
       <section>
         <Header />
-        <div className="container">
-          { showTimer && <Timer />}
-          <TimerButton toggleTimer={ this.toggleTimer } />
-        </div>
+        <section className="timer">
+          <h2>{ showTimer && second }</h2>
+        </section>
         <div>
           <br />
           <div> TRIVIA </div>
