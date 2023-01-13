@@ -9,7 +9,6 @@ class Games extends Component {
         <div>
           <Header />
           <Timer />
-          <h1>Games</h1>
         </div>
       </section>
     );

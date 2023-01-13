@@ -4,7 +4,7 @@ class Timer extends Component {
   render() {
     return (
       <section className="timer">
-        <h1>Responda antes que o tempo acabe</h1>
+        <h1>Time</h1>
         <h2>30</h2>
       </section>
     );
