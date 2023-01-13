@@ -1,5 +1,6 @@
 export const ADD_SETTINGS = 'ADD_SETTINGS';
 export const SAVE_USER = 'SAVE_USER';
+export const GO_HOME = 'GO_HOME';
 
 export const addSetting = (settingsInfo) => ({
   type: ADD_SETTINGS,
@@ -9,4 +10,9 @@ export const addSetting = (settingsInfo) => ({
 export const saveUser = (name, email) => ({
   type: SAVE_USER,
   payload: [name, email],
+});
+
+export const goHome = (otherpage) => ({ // otherpage = objeto criado com o estado
+  type: GO_HOME,
+  payload: { ...otherpage },
 });

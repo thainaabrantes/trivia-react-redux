@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 import fetchGame from '../serviceAPI/gameAPI';
 import '../css/style.css';
 
@@ -88,6 +89,7 @@ class Games extends Component {
     return (
       <section>
         <Header />
+        <Timer />
         <div>
           <div> TRIVIA </div>
 
