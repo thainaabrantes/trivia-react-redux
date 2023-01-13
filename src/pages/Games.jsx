@@ -5,21 +5,32 @@ import Header from '../components/Header';
 import Timer from '../components/Timer';
 import fetchGame from '../serviceAPI/gameAPI';
 import '../css/style.css';
+import TimerButton from '../components/TimerButton';
 
 const ERROR_RESPONSE = 3;
 
 class Games extends Component {
-  state = {
-    categoria: '',
-    pergunta: '',
-    respostaCorreta: '',
-    allAnswers: [],
-    clicked: false,
-  };
+  constructor() {
+    super();
+    this.state = {
+      categoria: '',
+      pergunta: '',
+      respostaCorreta: '',
+      allAnswers: [],
+      clicked: false,
+      showTimer: false,
+    };
+  }
 
   componentDidMount() {
     this.fetchAnswers();
   }
+
+  toggleTimer = () => {
+    this.setState = ((prevState) => ({
+      showTimer: !prevState.showTimer,
+    }));
+  };
 
   fetchAnswers = async () => {
     const token = localStorage.getItem('token');
@@ -79,12 +90,16 @@ class Games extends Component {
   };
 
   render() {
-    const { categoria, pergunta } = this.state;
+    const { categoria, pergunta, showTimer } = this.state;
     return (
       <section>
         <Header />
-        <Timer />
+        <div className="container">
+          { showTimer && <Timer />}
+          <TimerButton toggleTimer={ this.toggleTimer } />
+        </div>
         <div>
+          <br />
           <div> TRIVIA </div>
 
           <p data-testid="question-category">{ categoria }</p>
