@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 
-export default class Games extends Component {
+class Games extends Component {
   render() {
     return (
-      <div>
-        <Header />
-        <div>Games</div>
-      </div>
+      <section>
+        <div>
+          <Header />
+          <Timer />
+          <h1>Games</h1>
+        </div>
+      </section>
     );
   }
 }
+
+export default Games;
