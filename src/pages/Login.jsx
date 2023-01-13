@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addSetting, saveUser } from '../redux/actions';
-import fetchToken from '../serviceAPI/triviaAPI';
+import fetchToken from '../serviceAPI/tokenAPI';
 
 class Login extends Component {
   constructor(props) {
@@ -37,9 +37,8 @@ class Login extends Component {
     const { name, email } = this.state;
     const token = await fetchToken();
     localStorage.setItem('token', token);
-    history.push('/games');
-
     dispatch(saveUser(name, email));
+    history.push('/games');
   };
 
   handleClick = (event) => {
@@ -102,5 +101,9 @@ Login.propTypes = {
   }),
   dispatch: PropTypes.func,
 }.isRequired;
+
+Login.defaultProps = {
+  history: {},
+};
 
 export default connect()(Login);
