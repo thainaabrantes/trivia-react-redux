@@ -1,4 +1,4 @@
-import { ADD_SETTINGS, SAVE_USER, GO_HOME } from '../actions';
+import { ADD_SETTINGS, SAVE_USER, GO_HOME, SUM_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -18,6 +18,12 @@ const playerReducer = (state = INITIAL_STATE, action) => {
       ...state,
       name: action.payload[0],
       email: action.payload[1],
+    };
+  }
+  case SUM_SCORE: {
+    return {
+      ...state,
+      score: action.payload,
     };
   }
   default:

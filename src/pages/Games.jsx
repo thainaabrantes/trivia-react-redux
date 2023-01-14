@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
 import Header from '../components/Header';
 import fetchGame from '../serviceAPI/gameAPI';
 import '../css/style.css';
+import { sumScore } from '../redux/actions/index';
 
 const ERROR_RESPONSE = 3;
 const ONE_SECOND = 1000;
-const THIRTY_SECONDS = 30000;
 
 class Games extends Component {
   constructor() {
@@ -17,31 +19,29 @@ class Games extends Component {
       respostaCorreta: '',
       allAnswers: [],
       clicked: false,
-      showTimer: false,
-      second: 30,
+      seconds: 30,
       intervalId: '',
+      difficulty: '',
     };
   }
 
   componentDidMount() {
     this.fetchAnswers();
-    const intervalId = setInterval(() => {
-      this.setState((prevState) => ({
-        second: prevState.second - 1,
-      }));
-    }, ONE_SECOND);
-    setTimeout(() => {
-      this.setState({ clicked: true });
-    }, THIRTY_SECONDS);
-    this.setState({
-      intervalId,
-    });
+    this.resetSeconds();
   }
 
-  toggleTimer = () => {
-    this.setState((prevState) => ({
-      showTimer: !prevState.showTimer,
-    }));
+  resetSeconds = () => {
+    const intervalId = setInterval(() => {
+      this.setState((prevState) => ({
+        seconds: prevState.seconds - 1,
+        clicked: (prevState.seconds - 1) === 0,
+      }));
+    }, ONE_SECOND);
+
+    this.setState({
+      intervalId,
+      seconds: 30,
+    });
   };
 
   fetchAnswers = async () => {
@@ -62,15 +62,51 @@ class Games extends Component {
         pergunta: gameObject.results[0].question,
         respostaCorreta: gameObject.results[0].correct_answer,
         allAnswers: allA.sort(() => Math.random() - shuffleParam),
+        difficulty: gameObject.results[0].difficulty,
       });
     }
-    this.toggleTimer();
   };
 
-  handleClick = () => {
+  sumPoints = (id) => {
+    const { seconds, difficulty } = this.state;
+    const { name, email, score, dispatch } = this.props;
+    let difficultyPoint = 0;
+    const ten = 10;
+    const three = 3;
+    const two = 2;
+    const one = 1;
+
+    if (difficulty === 'hard') {
+      difficultyPoint = three;
+    } else if (difficulty === 'medium') {
+      difficultyPoint = two;
+    } else {
+      difficultyPoint = one;
+    }
+
+    if (id === 'correct-answer') {
+      const calcResullt = (ten + (seconds * difficultyPoint));
+      const sumOfPoints = score + calcResullt;
+
+      dispatch(sumScore(sumOfPoints));
+
+      // conferir se está correta esta forma de salvar no localStorage:
+      const ranking = [];
+      const rankingObj = {
+        name,
+        score: sumOfPoints,
+        picture: `https://www.gravatar.com/avatar/${md5(email)}`,
+      };
+      ranking.push(rankingObj);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
+  };
+
+  handleClickAnswer = ({ target }) => {
     this.setState({
       clicked: true,
     });
+    this.sumPoints(target.id);
   };
 
   handleNextQUestion = () => {
@@ -78,6 +114,7 @@ class Games extends Component {
       clicked: false,
     });
     this.fetchAnswers();
+    this.resetSeconds();
   };
 
   //  Fiz um aninhamento de expressão ternária para fazer a classe, porém o Lint me obrigou a fazer isso
@@ -98,9 +135,10 @@ class Games extends Component {
           type="button"
           key={ index }
           data-testid={ testId }
+          id={ testId }
           className={ clicked ? nomeClasse : '' }
           disabled={ clicked }
-          onClick={ this.handleClick }
+          onClick={ this.handleClickAnswer }
         >
           { answer }
         </button>
@@ -110,8 +148,8 @@ class Games extends Component {
   };
 
   render() {
-    const { categoria, pergunta, showTimer, clicked, second, intervalId } = this.state;
-    if (second === 0 || clicked) {
+    const { categoria, pergunta, clicked, seconds, intervalId } = this.state;
+    if (seconds === 0 || clicked) {
       clearInterval(intervalId);
     }
 
@@ -119,7 +157,7 @@ class Games extends Component {
       <section>
         <Header />
         <section className="timer">
-          <h2>{ showTimer && second }</h2>
+          <h2>{ seconds }</h2>
         </section>
         <div>
           <br />
@@ -149,6 +187,16 @@ Games.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-export default Games;
+const mapStateToProps = (state) => ({
+  name: state.player.name,
+  email: state.player.email,
+  score: state.player.score,
+});
+
+export default connect(mapStateToProps)(Games);
