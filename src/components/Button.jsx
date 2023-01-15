@@ -13,7 +13,6 @@ class Button extends Component {
   render() {
     return (
       <button
-        data-testid="btn-go-home"
         type="submit"
         onClick={ this.handlePage }
       >
@@ -28,7 +27,6 @@ Button.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
-  dispatch: PropTypes.func,
 }.isRequired;
 
 export default connect()(Button);
