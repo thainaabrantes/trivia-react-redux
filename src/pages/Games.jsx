@@ -114,20 +114,17 @@ class Games extends Component {
     const { countQuestion } = this.state;
     const { history } = this.props;
     const lastQuestion = 5;
-    const secondsfinal = 500;
     this.setState((prevState) => ({
       countQuestion: prevState.countQuestion + 1,
     }));
     if (countQuestion === lastQuestion) {
       history.push('/feedback');
     }
-    setTimeout(() => {
-      this.setState({
-        clicked: false,
-      });
-      this.fetchAnswers();
-      this.resetSeconds();
-    }, secondsfinal);
+    this.setState({
+      clicked: false,
+    });
+    this.fetchAnswers();
+    this.resetSeconds();
   };
 
   //  Fiz um aninhamento de expressão ternária para fazer a classe, porém o Lint me obrigou a fazer isso
