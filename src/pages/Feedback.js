@@ -19,7 +19,9 @@ class Feedback extends Component {
           />
         </Link>
         <br />
-        <Link to="/ranking">
+        <Link
+          to="/ranking"
+        >
           <ButtonRanking
             detail={ this.props }
           />
