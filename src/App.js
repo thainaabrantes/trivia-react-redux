@@ -16,7 +16,6 @@ class App extends Component {
         <Route exact path="/ranking" render={ (props) => <Ranking { ...props } /> } />
         <Route exact path="/settings" render={ (props) => <Settings { ...props } /> } />
         <Route exact path="/feedback" render={ (props) => <Feedback { ...props } /> } />
-
       </Switch>
     );
   }
