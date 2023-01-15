@@ -22,6 +22,7 @@ class Games extends Component {
       seconds: 30,
       intervalId: '',
       difficulty: '',
+      countQuestion: 1,
     };
   }
 
@@ -110,6 +111,15 @@ class Games extends Component {
   };
 
   handleNextQUestion = () => {
+    const { countQuestion } = this.state;
+    const { history } = this.props;
+    const lastQuestion = 5;
+    this.setState((prevState) => ({
+      countQuestion: prevState.countQuestion + 1,
+    }));
+    if (countQuestion === lastQuestion) {
+      history.push('/feedback');
+    }
     this.setState({
       clicked: false,
     });
