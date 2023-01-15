@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { goHome } from '../redux/actions';
 
 class Button extends Component {
   handlePage = (event) => {
     event.preventDefault();
-    const { data, dispatch } = this.props;
+    const { data } = this.props;
     const { history } = data;
-    dispatch(goHome(this.state));
     history.push('/');
   };
 
@@ -19,7 +17,7 @@ class Button extends Component {
         type="submit"
         onClick={ this.handlePage }
       >
-        Tela Inicial
+        Play Again
 
       </button>
     );

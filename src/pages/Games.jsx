@@ -136,7 +136,7 @@ class Games extends Component {
           key={ index }
           data-testid={ testId }
           id={ testId }
-          className={ clicked && nomeClasse }
+          className={ clicked ? nomeClasse : '' }
           disabled={ clicked }
           onClick={ this.handleClickAnswer }
         >

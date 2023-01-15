@@ -7,8 +7,8 @@ class Ranking extends Component {
     return (
       <section>
         <div>
-          <Button data={ this.props } />
           <h1>Ranking</h1>
+          <Button data={ this.props } />
         </div>
       </section>
     );
