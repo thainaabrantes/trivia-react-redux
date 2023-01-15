@@ -9,10 +9,12 @@ class Feedback extends Component {
       <section>
         <Header />
         <h1>Feedback</h1>
-        <Link to="/">
+        <Link
+          to="/"
+          data-testid="btn-play-again"
+        >
           <Button
             data={ this.props }
-            data-testid="btn-play-again"
           />
         </Link>
       </section>
