@@ -1,4 +1,4 @@
-import { ADD_SETTINGS, SAVE_USER, GO_HOME, SUM_SCORE } from '../actions';
+import { ADD_SETTINGS, SAVE_USER, SUM_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 };
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case ADD_SETTINGS || GO_HOME: {
+  case ADD_SETTINGS: {
     return {
       ...state,
       ...action.payload,

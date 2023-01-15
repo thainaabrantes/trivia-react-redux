@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Button from '../components/Button';
 
 class Ranking extends Component {
@@ -7,12 +6,15 @@ class Ranking extends Component {
     return (
       <section>
         <div>
-          <Button data={ this.props } />
-          <h1>Ranking</h1>
+          <h1 data-testid="ranking-title">Ranking</h1>
+          <Button
+            data={ this.props }
+            data-testid="btn-go-home"
+          />
         </div>
       </section>
     );
   }
 }
 
-export default connect()(Ranking);
+export default Ranking;
