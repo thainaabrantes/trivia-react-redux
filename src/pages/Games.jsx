@@ -23,6 +23,7 @@ class Games extends Component {
       intervalId: '',
       difficulty: '',
       countQuestion: 1,
+      assertions: 0,
     };
   }
 
@@ -48,7 +49,7 @@ class Games extends Component {
   fetchAnswers = async () => {
     const token = localStorage.getItem('token');
     const gameObject = await fetchGame(token);
-
+    console.log(gameObject);
     const { history } = this.props;
     if (gameObject.response_code === ERROR_RESPONSE) {
       history.push('/');
@@ -69,7 +70,7 @@ class Games extends Component {
   };
 
   sumPoints = (id) => {
-    const { seconds, difficulty } = this.state;
+    const { seconds, difficulty, assertions } = this.state;
     const { name, email, score, dispatch } = this.props;
     let difficultyPoint = 0;
     const ten = 10;
@@ -88,8 +89,10 @@ class Games extends Component {
     if (id === 'correct-answer') {
       const calcResullt = (ten + (seconds * difficultyPoint));
       const sumOfPoints = score + calcResullt;
-
       dispatch(sumScore(sumOfPoints));
+      // resgatando o estado anterior e somando +1 para cada resposta certa
+      this.setState((prevState) => ({ assertions: prevState.assertions + 1 }));
+      dispatch(addTotal(assertions));
 
       // conferir se está correta esta forma de salvar no localStorage:
       const ranking = [];
@@ -158,11 +161,11 @@ class Games extends Component {
   };
 
   render() {
-    const { categoria, pergunta, clicked, seconds, intervalId } = this.state;
+    const { categoria, pergunta, clicked, seconds, intervalId, assertions } = this.state;
     if (seconds === 0 || clicked) {
       clearInterval(intervalId);
     }
-
+    console.log(assertions);
     return (
       <section>
         <Header />
