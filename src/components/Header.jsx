@@ -15,10 +15,10 @@ class Header extends Component {
           alt="Gravatar"
         />
         <p data-testid="header-player-name">{`Nome: ${name} `}</p>
-        <spam>
+        <span>
           Score:
           <p data-testid="header-score">{ score }</p>
-        </spam>
+        </span>
       </header>
     );
   }
