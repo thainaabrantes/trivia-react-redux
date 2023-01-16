@@ -27,4 +27,4 @@ export const addTotal = (score, questions) => ({
 export const correctPhrase = (counts) => ({
   type: COUNT_CORRECT,
   payload: counts,
-})
+});

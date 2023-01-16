@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import ButtonRanking from '../components/ButtonRanking';
 import DataFeedback from '../components/DataFeedback';
-import { connect } from 'react-redux';
 
 class Feedback extends Component {
   render() {
