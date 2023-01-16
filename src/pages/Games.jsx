@@ -5,7 +5,7 @@ import md5 from 'crypto-js/md5';
 import Header from '../components/Header';
 import fetchGame from '../serviceAPI/gameAPI';
 import '../css/style.css';
-import { sumScore } from '../redux/actions/index';
+import { sumScore, correctPhrase } from '../redux/actions/index';
 
 const ERROR_RESPONSE = 3;
 const ONE_SECOND = 1000;
@@ -36,6 +36,12 @@ class Games extends Component {
     this.resetSeconds();
   }
 
+  componentDidUpdate() {
+    const { dispatch } = this.props;
+    const { countCorrect } = this.state;
+    dispatch(correctPhrase(countCorrect));
+  }
+
   resetSeconds = () => {
     const intervalId = setInterval(() => {
       this.setState((prevState) => ({
@@ -53,7 +59,6 @@ class Games extends Component {
   fetchAnswers = async () => {
     const token = localStorage.getItem('token');
     const gameObject = await fetchGame(token);
-    console.log(gameObject);
     const { history } = this.props;
     const { countQuestion } = this.state;
     if (gameObject.response_code === ERROR_RESPONSE) {
@@ -75,7 +80,7 @@ class Games extends Component {
   };
 
   sumPoints = (id) => {
-    const { seconds, difficulty, assertions } = this.state;
+    const { seconds, difficulty } = this.state;
     const { name, email, score, dispatch } = this.props;
     let difficultyPoint = 0;
     const ten = 10;

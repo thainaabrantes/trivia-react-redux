@@ -5,17 +5,18 @@ import Button from '../components/Button';
 import Header from '../components/Header';
 import ButtonRanking from '../components/ButtonRanking';
 import DataFeedback from '../components/DataFeedback';
+import { connect } from 'react-redux';
 
 class Feedback extends Component {
   render() {
-    const { countCorrect } = this.props;
+    const { assertions } = this.props;
     let feedbackMsg = '';
     const number3 = 3;
 
-    if (countCorrect < number3) {
-      feedbackMsg = 'Could be better...';
-    } else {
+    if (assertions >= number3) {
       feedbackMsg = 'Well Done!';
+    } else {
+      feedbackMsg = 'Could be better...';
     }
 
     return (
@@ -44,9 +45,9 @@ class Feedback extends Component {
         </div>
         <br />
         <div>
-          <p data-testid="feedback-text">
+          <h1 data-testid="feedback-text">
             { feedbackMsg }
-          </p>
+          </h1>
           <Link
             to="/ranking"
           >
@@ -61,7 +62,11 @@ class Feedback extends Component {
 }
 
 Feedback.propTypes = {
-  countCorrect: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  assertions: state.player.assertions,
+});
+
+export default connect(mapStateToProps)(Feedback);
