@@ -10,18 +10,27 @@ class Feedback extends Component {
       <section>
         <Header />
         <h1>Feedback</h1>
-        <Link to="/">
+        <Link
+          to="/"
+          data-testid="btn-play-again"
+        >
           <Button
             data={ this.props }
-            data-testid="btn-play-again"
           />
         </Link>
         <br />
-        <Link to="/ranking">
+        <Link
+          to="/ranking"
+        >
           <ButtonRanking
             detail={ this.props }
           />
         </Link>
+        <div>
+          <p data-testid="feedback-text">
+            teste feedback
+          </p>
+        </div>
       </section>
     );
   }
