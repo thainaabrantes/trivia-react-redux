@@ -1,9 +1,10 @@
-import { ADD_SETTINGS, SAVE_USER, SUM_SCORE } from '../actions';
+import { ADD_SETTINGS, SAVE_USER, SUM_SCORE, ADD_TOTAL } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
   score: 0,
+  assertions: 0,
 };
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -24,6 +25,13 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: action.payload,
+    };
+  }
+  case ADD_TOTAL: {
+    return {
+      ...state,
+      score: action.payload[0],
+      assertions: action.payload[1],
     };
   }
   default:

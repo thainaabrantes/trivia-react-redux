@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import ButtonRanking from '../components/ButtonRanking';
+import DataFeedback from '../components/DataFeedback';
 
 class Feedback extends Component {
   render() {
@@ -19,28 +20,40 @@ class Feedback extends Component {
 
     return (
       <section>
-        <Header />
-        <h1>Feedback</h1>
-        <Link
-          to="/"
-          data-testid="btn-play-again"
-        >
-          <Button
-            data={ this.props }
-          />
-        </Link>
+        <div>
+          <h1
+            data-testid="feedback-text"
+          >
+            Feedback
+          </h1>
+        </div>
+        <div>
+          <Header />
+          <DataFeedback />
+        </div>
         <br />
-        <Link
-          to="/ranking"
-        >
-          <ButtonRanking
-            detail={ this.props }
-          />
-        </Link>
+        <div>
+          <Link
+            to="/"
+            data-testid="btn-play-again"
+          >
+            <Button
+              data={ this.props }
+            />
+          </Link>
+        </div>
+        <br />
         <div>
           <p data-testid="feedback-text">
             { feedbackMsg }
           </p>
+          <Link
+            to="/ranking"
+          >
+            <ButtonRanking
+              detail={ this.props }
+            />
+          </Link>
         </div>
       </section>
     );
