@@ -10,6 +10,8 @@ import { sumScore } from '../redux/actions/index';
 const ERROR_RESPONSE = 3;
 const ONE_SECOND = 1000;
 
+const correctAnswer = 'correct-answer';
+
 class Games extends Component {
   constructor() {
     super();
@@ -22,7 +24,8 @@ class Games extends Component {
       seconds: 30,
       intervalId: '',
       difficulty: '',
-      countQuestion: 1,
+      countQuestion: 0,
+      countCorrect: 0,
     };
   }
 
@@ -50,20 +53,21 @@ class Games extends Component {
     const gameObject = await fetchGame(token);
 
     const { history } = this.props;
+    const { countQuestion } = this.state;
     if (gameObject.response_code === ERROR_RESPONSE) {
       history.push('/');
     } else {
-      const rightA = gameObject.results[0].correct_answer;
-      const wrongA = gameObject.results[0].incorrect_answers;
+      const rightA = gameObject.results[countQuestion].correct_answer;
+      const wrongA = gameObject.results[countQuestion].incorrect_answers;
       const allA = [...wrongA, rightA];
       const shuffleParam = 0.5;
 
       this.setState({
-        categoria: gameObject.results[0].category,
-        pergunta: gameObject.results[0].question,
-        respostaCorreta: gameObject.results[0].correct_answer,
+        categoria: gameObject.results[countQuestion].category,
+        pergunta: gameObject.results[countQuestion].question,
+        respostaCorreta: gameObject.results[countQuestion].correct_answer,
         allAnswers: allA.sort(() => Math.random() - shuffleParam),
-        difficulty: gameObject.results[0].difficulty,
+        difficulty: gameObject.results[countQuestion].difficulty,
       });
     }
   };
@@ -85,7 +89,7 @@ class Games extends Component {
       difficultyPoint = one;
     }
 
-    if (id === 'correct-answer') {
+    if (id === correctAnswer) {
       const calcResullt = (ten + (seconds * difficultyPoint));
       const sumOfPoints = score + calcResullt;
 
@@ -107,13 +111,18 @@ class Games extends Component {
     this.setState({
       clicked: true,
     });
+    if (target.id === correctAnswer) {
+      this.setState((prevState) => ({
+        countCorrect: prevState.countCorrect + 1,
+      }));
+    }
     this.sumPoints(target.id);
   };
 
   handleNextQUestion = () => {
     const { countQuestion } = this.state;
     const { history } = this.props;
-    const lastQuestion = 5;
+    const lastQuestion = 4;
     this.setState((prevState) => ({
       countQuestion: prevState.countQuestion + 1,
     }));
