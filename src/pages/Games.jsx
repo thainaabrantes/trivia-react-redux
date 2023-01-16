@@ -9,6 +9,7 @@ import { sumScore } from '../redux/actions/index';
 
 const ERROR_RESPONSE = 3;
 const ONE_SECOND = 1000;
+// comentário para commit
 
 const correctAnswer = 'correct-answer';
 
