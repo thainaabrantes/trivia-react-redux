@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   name: '',
   email: '',
   score: 0,
-  questions: 0,
+  assertions: 0,
 };
 const playerReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -30,8 +30,8 @@ const playerReducer = (state = INITIAL_STATE, action) => {
   case ADD_TOTAL: {
     return {
       ...state,
-      score: action.payload,
-      questions: action.payload,
+      score: action.payload[0],
+      assertions: action.payload[1],
     };
   }
   default:

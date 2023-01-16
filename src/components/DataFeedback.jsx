@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 
 class DataFeedback extends Component {
   render() {
-    const { score, questions } = this.props;
+    const { score, assertions } = this.props;
+    console.log(assertions);
     return (
       <section>
         <div>
@@ -18,7 +19,7 @@ class DataFeedback extends Component {
           <span
             data-testid="feedback-total-question"
           >
-            {`Total number of correct questions: ${questions}`}
+            {`Total number of correct questions: ${assertions}`}
           </span>
         </div>
       </section>
@@ -28,7 +29,12 @@ class DataFeedback extends Component {
 
 DataFeedback.propTypes = {
   score: PropTypes.number,
-  questions: PropTypes.number,
+  assertions: PropTypes.number,
 }.isRequired;
 
-export default connect()(DataFeedback);
+const mapStateToProps = (state) => ({
+  score: state.player.score,
+  assertions: state.player.assertions,
+});
+
+export default connect(mapStateToProps)(DataFeedback);
