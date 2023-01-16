@@ -9,6 +9,9 @@ import { sumScore } from '../redux/actions/index';
 
 const ERROR_RESPONSE = 3;
 const ONE_SECOND = 1000;
+// comentário para commit
+
+const correctAnswer = 'correct-answer';
 
 class Games extends Component {
   constructor() {
@@ -22,8 +25,9 @@ class Games extends Component {
       seconds: 30,
       intervalId: '',
       difficulty: '',
-      countQuestion: 1,
-      assertions: 0,
+      countQuestion: 0,
+      countCorrect: 0,
+      //  assertions: 0,
     };
   }
 
@@ -51,20 +55,21 @@ class Games extends Component {
     const gameObject = await fetchGame(token);
     console.log(gameObject);
     const { history } = this.props;
+    const { countQuestion } = this.state;
     if (gameObject.response_code === ERROR_RESPONSE) {
       history.push('/');
     } else {
-      const rightA = gameObject.results[0].correct_answer;
-      const wrongA = gameObject.results[0].incorrect_answers;
+      const rightA = gameObject.results[countQuestion].correct_answer;
+      const wrongA = gameObject.results[countQuestion].incorrect_answers;
       const allA = [...wrongA, rightA];
       const shuffleParam = 0.5;
 
       this.setState({
-        categoria: gameObject.results[0].category,
-        pergunta: gameObject.results[0].question,
-        respostaCorreta: gameObject.results[0].correct_answer,
+        categoria: gameObject.results[countQuestion].category,
+        pergunta: gameObject.results[countQuestion].question,
+        respostaCorreta: gameObject.results[countQuestion].correct_answer,
         allAnswers: allA.sort(() => Math.random() - shuffleParam),
-        difficulty: gameObject.results[0].difficulty,
+        difficulty: gameObject.results[countQuestion].difficulty,
       });
     }
   };
@@ -86,13 +91,13 @@ class Games extends Component {
       difficultyPoint = one;
     }
 
-    if (id === 'correct-answer') {
+    if (id === correctAnswer) {
       const calcResullt = (ten + (seconds * difficultyPoint));
       const sumOfPoints = score + calcResullt;
       dispatch(sumScore(sumOfPoints));
       // resgatando o estado anterior e somando +1 para cada resposta certa
-      this.setState((prevState) => ({ assertions: prevState.assertions + 1 }));
-      dispatch(addTotal(assertions));
+      //  this.setState((prevState) => ({ assertions: prevState.assertions + 1 }));
+      //  dispatch(addTotal(assertions));
 
       // conferir se está correta esta forma de salvar no localStorage:
       const ranking = [];
@@ -110,13 +115,18 @@ class Games extends Component {
     this.setState({
       clicked: true,
     });
+    if (target.id === correctAnswer) {
+      this.setState((prevState) => ({
+        countCorrect: prevState.countCorrect + 1,
+      }));
+    }
     this.sumPoints(target.id);
   };
 
   handleNextQUestion = () => {
     const { countQuestion } = this.state;
     const { history } = this.props;
-    const lastQuestion = 5;
+    const lastQuestion = 4;
     this.setState((prevState) => ({
       countQuestion: prevState.countQuestion + 1,
     }));
@@ -161,11 +171,10 @@ class Games extends Component {
   };
 
   render() {
-    const { categoria, pergunta, clicked, seconds, intervalId, assertions } = this.state;
+    const { categoria, pergunta, clicked, seconds, intervalId } = this.state;
     if (seconds === 0 || clicked) {
       clearInterval(intervalId);
     }
-    console.log(assertions);
     return (
       <section>
         <Header />
