@@ -1,8 +1,7 @@
 import React from 'react';
 import App from '../../App';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Feedback from '../../pages/Feedback'
 import { renderWithRouterAndRedux } from './renderWithRouterAndRedux';
 
 const INITIAL_STATE = {
@@ -10,7 +9,16 @@ const INITIAL_STATE = {
     name: 'Thaina Abrantes',
     email: 'oliveiraabrantess@gmail.com',
     score: 114,
-    assertions: 2
+    assertions: 2,
+  }
+}
+
+const APPROVED_STATE = {
+  player: {
+    name: 'Thaina Abrantes',
+    email: 'oliveiraabrantess@gmail.com',
+    score: 114,
+    assertions: 4,
   }
 }
 
@@ -48,39 +56,12 @@ describe('Componente Feedback', () => {
     const { history } = renderWithRouterAndRedux(<App />, INITIAL_STATE, '/feedback');
     const message = screen.getByRole('heading', {  name: /could be better\.\.\./i});
     expect(message).toBeInTheDocument();
+    expect(history.location.pathname).toBe('/feedback');
   })
-  test('Se o texto "Well Done!" está na tela ao acertar 3 questões', () => {
-    const { history } = renderWithRouterAndRedux(<App />, INITIAL_STATE, '/games');
-    // const WrongButton = screen.getByTestId('wrong-answer-0');
-    // expect(WrongButton).toBeInTheDocument();
-    // userEvent.click(WrongButton);
-    // const nextBtn = screen.getByRole('button', {name: /next/i});
-    // expect(nextBtn).toBeInTheDocument();
-    // userEvent.click(nextBtn);
-    // expect(WrongButton).toBeInTheDocument();
-    // userEvent.click(WrongButton);
-    // // const nextBtn = screen.getByRole('button', {name: /next/i});
-    // expect(nextBtn).toBeInTheDocument();
-    // userEvent.click(nextBtn);
-    // const correctButton = screen.getByTestId('correct-answer');
-    // expect(correctButton).toBeInTheDocument();
-    // userEvent.click(correctButton);
-    // // const nextBtn = screen.getByRole('button', {name: /next/i});
-    // expect(nextBtn).toBeInTheDocument();
-    // userEvent.click(nextBtn);
-    // // const correctButton = screen.getByTestId('correct-answer');
-    // expect(correctButton).toBeInTheDocument();
-    // userEvent.click(correctButton);
-    // // const nextBtn = screen.getByRole('button', {name: /next/i});
-    // expect(nextBtn).toBeInTheDocument();
-    // userEvent.click(nextBtn);
-    // // const correctButton = screen.getByTestId('correct-answer');
-    // expect(correctButton).toBeInTheDocument();
-    // userEvent.click(correctButton);
-    // // const nextBtn = screen.getByRole('button', {name: /next/i});
-    // expect(nextBtn).toBeInTheDocument();
-    // userEvent.click(nextBtn);
-    // const message = screen.getByRole('heading', {name: /well done!/i});
-    // expect(message).toBeInTheDocument();
+  test('Se o texto "Well Done!" está na tela ao acertar 4 questões', () => {
+    const { history } = renderWithRouterAndRedux(<App />, APPROVED_STATE, '/feedback');
+    const message = screen.getByRole('heading', {name: /well done!/i});
+    expect(message).toBeInTheDocument();
+    expect(history.location.pathname).toBe('/feedback');
   })
 })
